@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Générateur de prompt par Fabrice Heuvrard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 60px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 40px;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 9l4-6H2z' fill='%23333'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: 12px 12px;
+        }
+
+        input[type="button"] {
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+		.copy-button {
+			padding: 10px 20px;
+			margin-top: 15px;
+			font-size: 16px;
+			background-color: #4CAF50;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+        #result {
+            margin-top: 30px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 16px;
+        }
+
+		.radio-buttons {
+		  display: flex;
+		  flex-direction: column;
+		}
+
+		.radio-button {
+		  display: flex;
+		  align-items: center;
+		}
+
+		input[type="radio"] {
+		  display: none;
+		}
+
+		.radio-label {
+		  display: inline-block;
+		  padding: 10px 20px;
+		  font-size: 16px;
+		  border-radius: 4px;
+		  background-color: #e0e0e0;
+		  cursor: pointer;
+		}
+
+		.radio-label:hover {
+		  background-color: #ccc;
+		}
+
+		input[type="radio"]:checked + .radio-label {
+		  background-color: #4CAF50;
+		  color: #fff;
+		}
+	
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Prompt par Fabrice Heuvrard - pour le cabinet</h1>
+        <form id="promptForm">
+            <label for="contexte">Contexte de la demande :</label>
+            <input type="text" id="contexte" name="contexte" placeholder="Je suis en train de planifier une intervention technique">
+
+            <label for="Rôle">Rôle de ChatGPT</label>
+            <select id="Rôle" name="Tu as un rôle ">
+                <option value="">-- Sélectionnez --</option>
+                <option value="d'expert-comptable">Expert-comptable</option>
+                <option value="de spécialiste du sujet">Spécialiste</option>
+                <option value="de collaborateur">Collaborateur</option>
+				<option value="de prospects">Prospect</option>
+				<option value="de clients">Client</option>
+            </select>
+
+            <label for="Cible">Cible visée</label>
+            <select id="Cible" name="Le public visé sont ">
+                <option value="">-- Sélectionnez --</option>
+                <option value="des prospects">Prospect</option>
+				<option value="des prospects">Client du cabinet</option>
+                <option value="des collaborateurs">Collaborateurs du cabinet</option>
+                <option value="des experts-comptables">Experts-comptables</option>
+				<option value="des commissaires aux comptes">Commissaires aux comptes</option>
+            </select>
+
+            <label for="Format">Format attendu</label>
+            <select id="Format" name="Le format attendu de ta réponse">
+                <option value="">-- Sélectionnez --</option>
+                <option value="Je souhaite un tweet avec des smileys">Tweet avec Smileys</option>
+                <option value="Je veux que tu rédiges un emails">Email</option>
+                <option value="Je veux que tu rédiges un article">Article</option>
+                <option value="Je veux que que tu rédiges un message pour Linkedin">Message sur Linkedin</option>
+                <option value="Je veux que que tu rédiges un message mes réseaux sociaux pour mon entreprise en tant compte de leurs caractéristiques : format, tailles">Messages pour les réseaux sociaux de mon entreprise</option>
+            </select>
+
+            <label for="longueur">Longueur de réponse :</label>
+            <select id="longueur" name="La longueur de ta réponse">
+                <option value="">-- Sélectionnez --</option>
+                <option value="Ta réponse doit être courte (1 à 2 phrases)">Court (1 à 2 phrases)</option>
+                <option value="Ta réponse doit être normale en trois à quatre phrases)">Moyen (3 à 4 phrases)</option>
+                <option value="Ta réponse doit être assez longue avec un à deux paragraphes)">Long (1 à 2 paragraphes)</option>
+                <option value="Ta réponse doit être très longue avec plusieurs paragraphes">Très long (plusieurs paragraphes)</option>
+            </select>
+
+            <label for="tonalite">Ton de la réponse :</label>
+            <select id="tonalite" name="La tonalité de ta réponse doit être">
+                <option value="">-- Sélectionnez --</option>
+                <option value="formel">Formel</option>
+                <option value="informel">Informel</option>
+                <option value="convivial">Convivial</option>
+                <option value="technique">Technique</option>
+                <option value="humoristique">Humoristique</option>
+                <option value="sarcastique">Sarcastique</option>
+            </select>
+
+            <label for="style">Style d'écriture :</label>
+            <select id="style" name="Ton style d'écriture doit être ">
+                <option value="">-- Sélectionnez --</option>
+                <option value="conversationnel">Conversationnel</option>
+                <option value="journalistique">Journalistique</option>
+                <option value="académique">Académique</option>
+                <option value="créatif">Créatif</option>
+                <option value="technique">Technique</option>
+                <option value="persuasif">Persuasif</option>
+                <option value="tweet">Tweet</option>
+                <option value="télégramme">Télégramme</option>
+            </select>
+
+            <label for="level">Niveau de détail :</label>
+            <select id="level" name="Le niveau de détail souhaité doit être ">
+                <option value="">-- Sélectionnez --</option>
+                <option value="Succinct">Succinct</option>
+                <option value="Modéré">Modéré</option>
+                <option value="Approfondi">Approfondi</option>
+                <option value="Exhaustif">Exhaustif</option>
+            </select>
+
+            <label for="Ajout d'exemples ou de références">Inclusion d'exemples ou de références :</label>
+            <select id="Ajout d'exemples ou de références" name="Tu peux ajouter des ">
+                <option value="">-- Sélectionnez --</option>
+                <option value="Exemples pratiques">Exemples pratiques</option>
+                <option value="Références scientifiques">Références scientifiques</option>
+                <option value="Études de cas">Études de cas</option>
+                <option value="Statistiques récentes">Statistiques récentes</option>
+                <option value="Clichés culturels">Clichés culturels</option>
+            </select>
+
+            <label for="limites">Limites ou contraintes :</label>
+            <select id="limites" name="Limites ou contraintes à tenir compte" onchange="toggleAutreInput('limites', 'limitesAutre')">
+                <option value="">-- Sélectionnez --</option>
+                <option value="éviter les sujets politiques">Éviter les sujets politiques</option>
+                <option value="ne pas utiliser de jargon technique">Ne pas utiliser de jargon technique</option>
+                <option value="respecter les préférences linguistiques (par exemple, français britannique ou québécois)">Respecter les préférences linguistiques (par exemple, français britannique ou québécois)</option>
+                <option value="éviter les références à des marques commerciales">Éviter les références à des marques commerciales</option>
+                <option value="ne pas inclure de spoilers de films ou de séries populaires">Ne pas inclure de spoilers de films ou de séries populaires</option>
+            </select>
+
+            <label for="Word_use">Mots-clés à utiliser :</label>
+            <input type="text" id="Word_use" name="Mots-clés à utiliser dans ta réponse " placeholder="">
+
+			<label for="Citations">Citations à inclure dans la réponse :</label>
+			<div class="radio-buttons">
+			  <div class="radio-button">
+				<input type="radio" id="Oui" name="Citations" value="Inclure des citations dans ta réponse">
+				<label for="Oui" class="radio-label">Oui</label>
+			  </div>
+			  <div class="radio-button">
+				<input type="radio" id="Non" name="Citations" value="Ne pas inclure de citation dans ta réponse">
+				<label for="Non" class="radio-label">Non</label>
+			  </div>
+			</div>
+
+            <label for="Tache">Tâche à effectuer :</label>
+            <input type="text" id="Tache" name="Tâche à effectuer" placeholder="Je suis en train de planifier une intervention technique">
+
+
+
+            <input type="button" value="Générer le prompt personnalisé" onclick="generatePrompt()">
+        </form>
+
+        <div id="result"></div>
+
+        <script>
+            function generatePrompt() {
+                var formElements = document.getElementById('promptForm').elements;
+                var results = '<label for="Résultat ">ChatGPT, voici ma demande :</label><br>';
+
+                for (var i = 0; i < formElements.length; i++) {
+                    var element = formElements[i];
+
+                    if ((element.type === 'text' || element.type === 'select-one' || element.type === 'radio') && element.value !== '') {
+                        if (element.type === 'radio') {
+                            if (element.checked) {
+                                results += '<strong>' + element.name + ' :</strong> ' + element.value + '<br>';
+                            }
+                        } else {
+                            results += '<strong>' + element.name + ' :</strong> ' + element.value + '<br>';
+                        }
+                    }
+                }
+
+                document.getElementById('result').innerHTML = results;
+            }
+
+            function copyResult() {
+                var resultElement = document.getElementById('result');
+                var resultText = resultElement.innerText || resultElement.textContent;
+
+                // Créez un élément de texte temporaire pour copier le contenu
+                var tempElement = document.createElement('textarea');
+                tempElement.value = resultText;
+                document.body.appendChild(tempElement);
+
+                // Sélectionne et copie le contenu du texte temporaire
+                tempElement.select();
+                tempElement.setSelectionRange(0, 99999); // Pour les navigateurs mobiles
+
+                // Copie le texte dans le presse-papiers
+                document.execCommand('copy');
+
+                // Supprime l'élément de texte temporaire
+                document.body.removeChild(tempElement);
+
+                // Affiche un message de confirmation
+                alert("Le prompt a été copié !");
+            }
+        </script>
+
+        <div>
+            <button id="copyButton" onclick="copyResult()" class="copy-button">Copier</button>
+        </div>
+    </div>
+</body>
+</html>
